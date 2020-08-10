@@ -6,6 +6,7 @@
 #include "events/ListDirectoryEvent.hpp"
 #include "events/ChangeDirectoryEvent.hpp"
 #include "events/PresentWorkingDirectoryEvent.hpp"
+#include "events/ExitEvent.hpp"
 #include "enc_dec/ReqMessage.hpp"
 #include "enc_dec/RespMessage.hpp"
 #include <memory>
@@ -23,6 +24,7 @@ MessageController :: MessageController (Application& app) : m_app(app)
 	m_instance_map[1] = ListDirectoryEvent :: get_instance;
 	m_instance_map[2] = ChangeDirectoryEvent :: get_instance;
 	m_instance_map[3] = PresentWorkingDirectoryEvent :: get_instance;
+	m_instance_map[4] = ExitEvent :: get_instance;
 }
 
 MessageController*
