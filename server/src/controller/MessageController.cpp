@@ -5,6 +5,7 @@
 #include "events/BaseEvent.hpp"
 #include "events/ListDirectoryEvent.hpp"
 #include "events/ChangeDirectoryEvent.hpp"
+#include "events/PresentWorkingDirectoryEvent.hpp"
 #include "enc_dec/ReqMessage.hpp"
 #include "enc_dec/RespMessage.hpp"
 #include <memory>
@@ -21,12 +22,7 @@ MessageController :: MessageController (Application& app) : m_app(app)
 	// initialize the unorderd map of the MesgTypes
 	m_instance_map[1] = ListDirectoryEvent :: get_instance;
 	m_instance_map[2] = ChangeDirectoryEvent :: get_instance;
-	/*
-	m_instance_map[3] = FirefoxKillReqEvent :: get_instance;
-	m_instance_map[4] = FirefoxKillRespEvent :: get_instance;
-	m_instance_map[5] = CalcKillReqEvent :: get_instance;
-	m_instance_map[6] = CalcKillRespEvent :: get_instance;
-	*/
+	m_instance_map[3] = PresentWorkingDirectoryEvent :: get_instance;
 }
 
 MessageController*
@@ -96,6 +92,8 @@ MessageController :: queue_listen_thread()
 	BaseEvent* lp_event =  m_instance_map[lp_msg -> get_mesg_type()](m_app, ip, lp_msg -> get_rcvd_port(), lp_msg -> get_client_no(), lp_msg -> get_buf(), lp_msg -> get_size());
 	lp_event -> load();
 	this -> m_ad_iface_to_cntrler_queue . pop();
+	delete lp_msg;
+	m_app . get_udp_worker() . clear_buf();
 	}
 }
 
@@ -137,20 +135,6 @@ MessageController :: queue_send_thread()
 		lp_msg -> set_string (*(str+i));
 		m_app . get_udp_worker() . on_send(lp_rcvd_event -> get_ip(), lp_msg -> get_port(), (char*)lp_msg, sizeof(RespMessage));
 	}
-	/*
-	int no = lp_msg -> get_no_strings();
-	int i;
-	while (i < no)
-	{	
-		struct Buffer* p_buf = lp_msg -> get_buf();
-		struct sendBuffer* s_buf;
-		strncpy(s_buf.ip, lp_msg -> get_ip(), 16);
-		s_buf . port = lp_msg -> get_port();
-		strncpy(s_buf.str, p_buf[i].str, PATH_MAX);
-		m_app . get_udp_worker() . on_send(lp_rcvd_event -> get_ip(), lp_msg -> get_port(), (char*)s_buf, sizeof());
-		i++;
-	}
-	*/
 	this -> m_ad_cntrler_to_iface_queue . pop();
 	delete lp_rcvd_event;
 	delete lp_msg;

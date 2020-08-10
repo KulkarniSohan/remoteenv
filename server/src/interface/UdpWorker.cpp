@@ -57,3 +57,10 @@ UdpWorker :: on_send(string& ip_addr, uint16_t port, char* buf, int buf_size)
 	cout << "UdpWorker :: on_send : IP " << ip_addr << "Port : " << port << endl; 
 	mp_udp_server -> send_to(ip_addr, port, buf, buf_size);
 }
+
+void
+UdpWorker :: clear_buf()
+{
+	cout << "UdpWorker :: clear_buf " << endl;
+	delete m_server_buf;
+}

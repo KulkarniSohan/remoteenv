@@ -35,6 +35,7 @@ class UdpWorker
 		pthread_t init();
 		void on_receive(string client_ip, char* buf, int buf_size);
 		void on_send(string& ip_addr, uint16_t port, char* buf, int buf_size);
+		void clear_buf();
 };
 
 

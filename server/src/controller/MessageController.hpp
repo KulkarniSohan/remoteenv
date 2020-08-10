@@ -11,17 +11,6 @@ class ReqMessage;
 
 using namespace std;
 
-
-/*
-* Message Type :
-* 	1. Echo Request
-* 	2. Echo Response
-*	3. Firefox Kill Request
-* 	4. Firefox kill Response
-*	5. Calc Kill Request
-*	6. Calc Kill Response
-*/
-
 class MessageController
 {
 	private :
