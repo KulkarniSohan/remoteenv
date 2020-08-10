@@ -16,6 +16,7 @@
 #include "events/BaseEvent.hpp"
 #include "events/ListDirectoryEvent.hpp"
 #include "events/ChangeDirectoryEvent.hpp"
+#include "events/PresentWorkingDirectoryEvent.hpp"
 #include "entities/Client.hpp"
 #include <linux/limits.h>
 
@@ -105,6 +106,27 @@ Application :: startup ()
 		else
 		if (ch == 3)
 		{
+			char ip_addr[16] = {0};
+            char* cd;
+            int port, l_client_no = 0;
+            printf ("\nEnter Server IP Address : ");
+            scanf ("%s", ip_addr);
+            printf ("\nEnter Port : ");
+            scanf ("%d", &port);
+            printf ("\nEnter Client No : ");
+            scanf ("%d", &l_client_no);
+			shared_ptr <Client>lp_client;
+            lp_client = mp_client_dao -> get_client_map(l_client_no);
+			if (lp_client == nullptr)
+            {
+                string l_ip(ip_addr);
+                lp_client = make_shared<Client>(l_client_no, l_ip, port);
+                cd = getenv("PWD");
+                string cwd(cd);
+                lp_client -> set_cwd(cwd);
+                mp_client_dao -> add_client_map(l_client_no, lp_client);
+            }
+			new PresentWorkingDirectoryEvent((*this), lp_client -> get_ip(), lp_client -> get_port(), lp_client -> get_client_no(), lp_client -> get_cwd());
 		}
 	}
 	

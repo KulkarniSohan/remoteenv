@@ -5,6 +5,7 @@
 #include "events/BaseEvent.hpp"
 #include "events/ListDirectoryEvent.hpp"
 #include "events/ChangeDirectoryEvent.hpp"
+#include "events/PresentWorkingDirectoryEvent.hpp"
 #include "enc_dec/ReqMessage.hpp"
 #include "enc_dec/RespMessage.hpp"
 #include "interface/UdpWorker.hpp"
@@ -17,14 +18,7 @@ MessageController :: MessageController (Application& app) : m_app(app)
 	// initialize the unorderd map of the MesgTypes
 	m_instance_map[2] = ListDirectoryEvent :: get_instance;
 	m_instance_map[3] = ChangeDirectoryEvent :: get_instance;
-	
-	//m_instance_map[2] = EchoRespEvent :: get_instance;
-	/*
-	m_instance_map[3] = FirefoxKillReqEvent :: get_instance;
-	m_instance_map[4] = FirefoxKillRespEvent :: get_instance;
-	m_instance_map[5] = CalcKillReqEvent :: get_instance;
-	m_instance_map[6] = CalcKillRespEvent :: get_instance;
-	*/
+	m_instance_map[4] = PresentWorkingDirectoryEvent :: get_instance;
 }
 
 MessageController*

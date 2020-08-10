@@ -1,5 +1,5 @@
-#ifndef __LIST_DIRECTORY_EVENT_HPP__
-#define __LIST_DIRECTORY_EVENT_HPP__
+#ifndef __PRESENT_WORKING_DIRECTORY_EVENT_HPP__
+#define __PRESENT_WORKING_DIRECTORY_EVENT_HPP__
 
 
 #include "BaseEvent.hpp"
@@ -12,7 +12,7 @@ class Application;
 using namespace std;
 
 
-class ListDirectoryEvent : public BaseEvent
+class PresentWorkingDirectoryEvent : public BaseEvent
 {
 	private :
 		int m_msg_type;
@@ -20,9 +20,9 @@ class ListDirectoryEvent : public BaseEvent
 		int m_size;
 	public :
 		static BaseEvent* get_instance(Application& app, string& m_ip, uint16_t port, int client_no, char* buffer, int size);
-		ListDirectoryEvent(Application& app, string& ip, uint16_t port, int client_no);
-		ListDirectoryEvent(Application& app, string& ip, uint16_t port, int client_no, char* buffer, int size);
-		~ListDirectoryEvent();
+		PresentWorkingDirectoryEvent(Application& app, string& ip, uint16_t port, int client_no, string& cwd);
+		PresentWorkingDirectoryEvent(Application& app, string& ip, uint16_t port, int client_no, char* buffer, int size);
+		~PresentWorkingDirectoryEvent();
 		void load();
 		void process();
 		char* get_buf();
