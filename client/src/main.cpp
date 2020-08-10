@@ -17,6 +17,7 @@
 #include "events/ListDirectoryEvent.hpp"
 #include "events/ChangeDirectoryEvent.hpp"
 #include "events/PresentWorkingDirectoryEvent.hpp"
+#include "events/ExitEvent.hpp"
 #include "entities/Client.hpp"
 #include <linux/limits.h>
 
@@ -32,6 +33,7 @@ int menu()
 	printf ("\t 1. LS");
 	printf ("\t 2. cd");
 	printf ("\t 3. pwd");
+	printf ("\t 4. bye");
 	printf ("\n\t Enter Option : ");
 	scanf ("%d", &ch);
 	return ch;
@@ -127,6 +129,29 @@ Application :: startup ()
                 mp_client_dao -> add_client_map(l_client_no, lp_client);
             }
 			new PresentWorkingDirectoryEvent((*this), lp_client -> get_ip(), lp_client -> get_port(), lp_client -> get_client_no(), lp_client -> get_cwd());
+		}
+		else
+		if (ch == 4)
+		{
+			char ip_addr[16] = {0};
+            char* cd;
+            int port, l_client_no = 0;
+            printf ("\nEnter Server IP Address : ");
+            scanf ("%s", ip_addr);
+            printf ("\nEnter Port : ");
+            scanf ("%d", &port);
+            printf ("\nEnter Client No : ");
+            scanf ("%d", &l_client_no);
+            shared_ptr <Client>lp_client;
+            lp_client = mp_client_dao -> get_client_map(l_client_no);
+			cd = getenv("PWD");
+			string cwd(cd);
+			if (lp_client == nullptr)
+			{
+				printf ("\n Client not available");
+				continue;
+			}
+			new ExitEvent((*this), lp_client -> get_ip(), lp_client -> get_port(), lp_client -> get_client_no(), lp_client -> get_cwd());
 		}
 	}
 	
