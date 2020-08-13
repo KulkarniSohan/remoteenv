@@ -1,4 +1,4 @@
-Niyuj Test Document
+ Document
 
 Design of Server and Client folder :
 1. Structure of the directories consists of following :
